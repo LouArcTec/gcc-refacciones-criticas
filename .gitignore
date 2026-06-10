@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+.ipynb_checkpoints/
+
+*.pyc
+*.pyo
+
+purchase_table_all_parts.csv
+
+.streamlit/secrets.toml
