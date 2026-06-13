@@ -32,5 +32,4 @@ EXPOSE 8501
 # Configure container health-check flags
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-# Run Streamlit on container startup bound to all interfaces
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.enableCORS=false", "--server.enableXsrfProtection=false"]

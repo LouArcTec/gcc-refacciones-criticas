@@ -1,5 +1,4 @@
 # %%
-import matplotlib.pyplot as plt
 from datetime import timedelta
 from sksurv.ensemble import RandomSurvivalForest
 from sklearn.model_selection import StratifiedKFold
@@ -158,13 +157,6 @@ for k in cluster_range:
     km = KMeans(n_clusters=k, random_state=42, n_init='auto')
     km.fit(X_features)
     wcss.append(km.inertia_)
-
-# Plot the Elbow
-plt.plot(cluster_range, wcss, 'bx-')
-plt.xlabel('Number of Clusters (K)')
-plt.ylabel('WCSS / Inertia')
-plt.title('The Elbow Method showing the Optimal K')
-plt.show()
 
 # 7. Apply K-Means grouping over the hybrid space for all parts
 # Preserved your modified target of 25 clusters
