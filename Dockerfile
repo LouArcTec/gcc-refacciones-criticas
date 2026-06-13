@@ -8,7 +8,7 @@ ENV PYTHONUNBUFFERED=1 \
 # Establish our working directory inside the container
 WORKDIR /app
 
-# Install system dependencies if required by packages like scikit-survival/gfortran
+# Install system dependencies required by packages like scikit-survival
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
@@ -20,11 +20,15 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all code assets and reference Excel/CSV raw datasets into the container
-COPY app.py pipeline.py ./
-COPY consumibles.xlsx* infotec.xlsx* ./
-# Copy any underlying sub-sheets if they are separate files in your folder
-COPY *.csv ./ 
+# --- FIXES APPLIED BELOW TO MATCH NEW REPO STRUCTURE ---
+
+# Create the structural directories inside the container workspace
+RUN mkdir -p data model
+
+# Copy the files out of your new local subfolders into the container
+COPY app/app.py ./app/
+COPY model/pipeline.py ./model/
+COPY data/consumibles.xlsx* data/infotec.xlsx* data/*.csv ./data/
 
 # Expose the default Streamlit network port
 EXPOSE 8501
@@ -32,4 +36,4 @@ EXPOSE 8501
 # Configure container health-check flags
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.enableCORS=false", "--server.enableXsrfProtection=false"]
+ENTRYPOINT ["streamlit", "run", "app/app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.enableCORS=false", "--server.enableXsrfProtection=false"]

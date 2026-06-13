@@ -7,8 +7,8 @@ import os
 
 @st.cache_data
 def load_data():
-    if os.path.exists("Master_Procurement_All_Trucks.csv"):
-        return pd.read_csv("Master_Procurement_All_Trucks.csv")
+    if os.path.exists("data/Master_Procurement_All_Trucks.csv"):
+        return pd.read_csv("data/Master_Procurement_All_Trucks.csv")
     else:
         st.warning(
             "Procurement ledger data file not found. Please upload fresh datasets and run the pipeline.")
@@ -87,21 +87,21 @@ if check_password():
             try:
                 # 1. Overwrite infotec matrix file on workspace disk if provided
                 if uploaded_infotec is not None:
-                    with open("infotec.xlsx", "wb") as f:
+                    with open("data/infotec.xlsx", "wb") as f:
                         f.write(uploaded_infotec.getbuffer())
                     st.sidebar.info(
                         "📝 Saved fresh 'infotec.xlsx' into container filesystem.")
 
                 # 2. Overwrite consumables matrix file on workspace disk if provided
                 if uploaded_consumibles is not None:
-                    with open("consumibles.xlsx", "wb") as f:
+                    with open("data/consumibles.xlsx", "wb") as f:
                         f.write(uploaded_consumibles.getbuffer())
                     st.sidebar.info(
                         "📝 Saved fresh 'consumibles.xlsx' into container filesystem.")
 
                 # 3. Launch isolated processing task
                 result = subprocess.run(
-                    ["python", "pipeline.py"], capture_output=True, text=True, check=True)
+                    ["python", "model/pipeline.py"], capture_output=True, text=True, check=True)
 
                 # Clear cache so data visuals instantly read the new target file
                 st.cache_data.clear()

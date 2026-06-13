@@ -19,7 +19,7 @@ warnings.filterwarnings('ignore')
 # =====================================================================
 # Note: Outlier capping logic has been explicitly removed. Extreme
 # machine failures are vital for the survival curve to learn properly.
-RAW_FILE = "infotec.xlsx"  # Ensure this path matches your environment
+RAW_FILE = "data/infotec.xlsx"  # Ensure this path matches your environment
 
 print("Loading raw files...")
 df_equipos = pd.read_excel(RAW_FILE, sheet_name="Equipos")
@@ -57,7 +57,7 @@ df_refacciones['Description_Cleaned'] = df_refacciones['Description'].fillna(
 print("Filtering out bulk purchase consumables...")
 # Load the consumables reference list (handling it as an Excel file per your modification)
 df_consumibles = pd.read_excel(
-    "consumibles.xlsx",
+    "data/consumibles.xlsx",
     sheet_name="Sheet1",
     header=None,
     names=["Consumable_Description"]
@@ -439,4 +439,4 @@ print("🚀 FLEET DEPLOYMENT SUCCESS: Procurement Ledger Compiled")
 print("="*100)
 print(final_ledger.head(15).to_string(index=False))
 
-final_ledger.to_csv("Master_Procurement_All_Trucks.csv", index=False)
+final_ledger.to_csv("data/Master_Procurement_All_Trucks.csv", index=False)
